@@ -1,14 +1,26 @@
 README
 ======
+A collection of basic Hadoop/MapReduce examples.
+
+Installation and configuration instructions for setting up a single-node Hadoop
+"cluster" are provided below, making it possible to run the examples on a
+personal machine. The installation instructions assume Mac OS 10.6.8, but they
+should work for any version of Mac OS as long as Homebrew and a recent Java
+installation are available. The Configuration instructions assume Hadoop 2.6.
+
+(The bash prompt is indicated by ``>>>`` in the snippets below.)
+
+1. `Hadoop installation`_
+2. `Single node configuration`_
+
+   - `Setup remote access to localhost`_
+   - `Configure Hadoop`_
+
+3. `MapReduce examples`_
 
 
 Hadoop installation
 -------------------
-Steps for Mac OS 10.6.8.
-
-(To improve visual separation between commands and output in the snippets
-below, the bash promt and continuation lines are indicated by ``>>>`` and
-``...``, respectively .)
 
 1. Check Java version::
 
@@ -19,9 +31,9 @@ below, the bash promt and continuation lines are indicated by ``>>>`` and
 
    According to http://wiki.apache.org/hadoop/HadoopJavaVersions, only versions
    1.6.0_16, 1.6.0_18, and 1.6.0_19 in the 1.6 series are reported to have
-   problems, so I'll assume 1.6.0_65 will work.
+   problems, so 1.6.0_65 should be fine.
 
-2. Install hadoop via homebrew (make sure to update and upgrade first)::
+2. Install Hadoop via Homebrew (make sure to update and upgrade first)::
 
      >>> brew update
      >>> brew upgrade
@@ -35,12 +47,11 @@ below, the bash promt and continuation lines are indicated by ``>>>`` and
        /usr/libexec/java_home
      ...
 
-3. Test (should bring up the usage message)::
+3. Test the installation. This should bring up the usage message::
 
      >>> hadoop
      Usage: hadoop [--config confdir] COMMAND
      ...
-
 
 
 Single node configuration
@@ -68,12 +79,12 @@ Setup remote access to localhost
 
 Configure Hadoop
 ````````````````
-The hadoop configuration files are located in
-/usr/local/Cellar/hadoop/2.6.0/libexec/etc/hadoop.
+Homebrew places the Hadoop configuration files in
+``/usr/local/Cellar/hadoop/2.6.0/libexec/etc/hadoop``.
 
-1. Assign the name of the default filesystem to localhost (the port number is
-   arbitrary number) and set a base directory for temporary data. Enter the
-   following between the ``<configuration>`` tags in core-site.xml::
+1. Assign the name of the default filesystem to ``localhost`` (the port number
+   is arbitrary) and set a base directory for temporary data. Enter the
+   following between the ``<configuration>`` tags in ``core-site.xml``::
 
      <property>
        <name>fs.defaultFS</name>
@@ -85,12 +96,12 @@ The hadoop configuration files are located in
        <value>/Users/Jake/hadoop/tmp</value>
      </property>
 
-   Create the hadoop.tmp.dir directory::
+   Create the ``hadoop.tmp.dir`` directory::
 
      >>> mkdir -p ~/hadoop/tmp
 
 2. Set the number of file replications to 1. Enter the following between the
-   ``<configuration>`` tags in hdfs-site.xml::
+   ``<configuration>`` tags in ``hdfs-site.xml``::
 
      <property>
        <name>dfs.replication</name>
@@ -102,19 +113,31 @@ The hadoop configuration files are located in
      >>> cd /usr/local/Cellar/hadoop/2.6.0/libexec/etc/hadoop
      >>> cp mapred-site.xml.template mapred-site.xml
 
-   .. Assign the host:port that the MapReduce job tracker runs at. Enter the
-   .. following between the ``<configuration>`` tags in mapred-site.xml::
+   .. Assign the host and port that the MapReduce job tracker runs at. Enter
+   .. the following between the ``<configuration>`` tags in
+   .. ``mapred-site.xml``::
    ..
    ..     <property>
    ..       <name>mapreduce.jobtracker.address</name>
    ..       <value>hdfs://localhost:54311</value>
    ..     </property>
 
-   Set the MapReduce job tracker address to local so that jobs are run
+   Set the MapReduce job tracker address to ``local`` so that jobs are run
    in-process as a single map and reduce task. Enter the following between the
-   ``<configuration>`` tags in mapred-site.xml::
+   ``<configuration>`` tags in ``mapred-site.xml``::
 
        <property>
          <name>mapreduce.jobtracker.address</name>
          <value>local</value>
        </property>
+
+
+MapReduce examples
+------------------
+
+1. ``mapreduce_grep.sh``: search for strings ("grep") using a jar file from the
+   builtin example collection.
+.. 2. ``mapreduce_wordcount.sh``: count the number of occurrences of all words
+..    using a jar file from the builtin example collection.
+.. 3. ``mapreduce_pywordcount.sh``: the same word count task, but implemented
+..    using a custom python code with the Hadoop streaming utility.
