@@ -136,8 +136,9 @@ MapReduce examples
 ------------------
 
 1. ``mapreduce_grep.sh``: search for strings ("grep") using a jar file from the
-   builtin example collection.
-.. 2. ``mapreduce_wordcount.sh``: count the number of occurrences of all words
-..    using a jar file from the builtin example collection.
+   builtin example collection. The comments in this script provide details
+   about setting up and working with the Hadoop distributed file system.
+2. ``mapreduce_wordcount.sh``: count the number of occurrences of all words
+   using a jar file from the builtin example collection.
 .. 3. ``mapreduce_pywordcount.sh``: the same word count task, but implemented
 ..    using a custom python code with the Hadoop streaming utility.
