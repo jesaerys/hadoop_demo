@@ -40,8 +40,10 @@ hdfs namenode -format
 $HADOOP_DIR/sbin/start-dfs.sh
 
 
-# Designate /data as the location for the input data on the HDFS; create it
+# Create the input data directory on the HDFS and copy fresh data into it.
+# Designate /data as the HDFS input data location.
 hdfs dfs -mkdir -p /data
+hdfs dfs -put lorem_ipsum.txt /data/
 
 # Note: The HDFS is its own file system, so directories created within it have
 # no corresponding entity in the local file system. The contents of the HDFS
@@ -51,11 +53,6 @@ hdfs dfs -mkdir -p /data
 #
 # Note: MapReduce will automatically create /user and /user/<username> on the
 # HDFS. Both directories can be ignored for this example.
-
-
-# Empty out the data directory and copy fresh data into it
-hdfs dfs -rm -f -r /data/*
-hdfs dfs -put lorem_ipsum.txt /data/
 
 
 # Grep the input data for the given pattern. Designate /results as the
