@@ -93,12 +93,12 @@ Homebrew places the Hadoop configuration files in
      
      <property>
        <name>hadoop.tmp.dir</name>
-       <value>/Users/Jake/hadoop/tmp</value>
+       <value>/Users/Jake/hadoop_tmp/tmp</value>
      </property>
 
    Create the ``hadoop.tmp.dir`` directory::
 
-     >>> mkdir -p ~/hadoop/tmp
+     >>> mkdir -p "$(hdfs getconf -confKey hadoop.tmp.dir)"
 
 2. Set the number of file replications to 1. Enter the following between the
    ``<configuration>`` tags in ``hdfs-site.xml``::
