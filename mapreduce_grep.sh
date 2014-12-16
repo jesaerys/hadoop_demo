@@ -2,7 +2,7 @@
 
 
 # Use Hadoop/MapReduce to grep for all words containing the substring "am" in
-# the first paragraph of Lorem Ipsum.
+# five paragraphs of Lorem Ipsum.
 #
 # The actual MapReduce grepping task is performed by premade Java code (a jar
 # file) from the example library packaged with Hadoop. Adapted from
@@ -11,11 +11,16 @@
 # Output files are placed in $HOME/hadoop_tmp/output. The contents of the main
 # output file (part-r-00000) should be,
 #
-#   6	amet
-#   2	quam
-#   1	ullamcorper
-#   1	ullam
-#   1	diam
+#   11	amet
+#   4	diam
+#   4	Vivamus
+#   3	Aliquam
+#   2	ullamcorper
+#   2	Nullam
+#   2	Etiam
+#   1	quam
+#   1	aliquam
+#   1	Nam
 
 
 HADOOP_DIR=/usr/local/Cellar/hadoop/2.6.0
@@ -43,7 +48,7 @@ $HADOOP_DIR/sbin/start-dfs.sh
 # Create the input data directory on the HDFS and copy fresh data into it.
 # Designate /data as the HDFS input data location.
 hdfs dfs -mkdir -p /data
-hdfs dfs -put lorem_ipsum.txt /data/
+hdfs dfs -put test_data/*.txt /data/
 
 # Note: The HDFS is its own file system, so directories created within it have
 # no corresponding entity in the local file system. The contents of the HDFS
@@ -62,7 +67,7 @@ EXAMPLE_NAME=hadoop-mapreduce-examples-2.6.0.jar
 EXAMPLE_PATH=$EXAMPLE_DIR/$EXAMPLE_NAME
 INPUT_DIR=/data
 OUTPUT_DIR=/results
-PATTERN='[a-z]*am[a-z]*'
+PATTERN='[a-zA-Z]*am[a-zA-Z]*'
 hadoop jar $EXAMPLE_PATH grep $INPUT_DIR $OUTPUT_DIR $PATTERN
 
 
